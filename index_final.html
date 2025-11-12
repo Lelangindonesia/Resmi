@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Katalog Lelang — KPKNL Style</title>
+  <style>
+    :root{
+      --kpknl-blue:#0b3b6f;
+      --kpknl-green:#1e8449;
+      --muted:#e6eef6;
+      --card:#ffffff;
+      --text:#1b1b1b;
+      --gap:16px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family:"Segoe UI", Roboto, Arial, sans-serif;
+      background:#f7f9fb; color:var(--text);
+    }
+    header{
+      background:var(--card); border-bottom:4px solid var(--muted);
+      padding:18px 20px; display:flex; gap:16px; align-items:center;
+    }
+    header .brand{display:flex; gap:14px; align-items:center;}
+    header .logo{width:86px; height:86px; background:#fff; display:flex; align-items:center; justify-content:center; border-radius:10px; border:2px solid var(--kpknl-blue); overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.1);}
+    header .logo img{width:100%; height:100%; object-fit:contain;}
+    header h1{margin:0; font-size:18px; color:var(--kpknl-blue); text-transform:uppercase;}
+    header p{margin:0; color:#3b556e; font-size:13px}
+    .nav{display:flex; gap:10px; padding:12px 20px; align-items:center; background:linear-gradient(90deg,var(--muted),transparent);}
+    .nav button{border:0; background:none; padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:700; color:var(--kpknl-blue);}
+    .nav button.active{background:var(--kpknl-blue); color:#fff; box-shadow:0 2px 6px rgba(11,59,111,0.12)}
+    main{padding:22px; max-width:1100px; margin:0 auto;}
+    .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:var(--gap); margin-top:14px;}
+    .card{background:var(--card); border:1px solid #e6eef6; border-radius:10px; overflow:hidden; display:flex; flex-direction:column; box-shadow:0 2px 8px rgba(15,40,80,0.04);}
+    .card img{width:100%; height:160px; object-fit:cover; display:block; background:#efefef}
+    .card .body{padding:12px; display:flex; flex-direction:column; gap:8px; flex:1}
+    .card .title{font-weight:700; color:var(--kpknl-blue); font-size:15px}
+    .card .desc{font-size:13px; color:#586574}
+    .card .price{margin-top:auto; font-weight:800; color:var(--kpknl-green)}
+    .card .actions{display:flex; gap:8px; margin-top:8px}
+    .btn{border:0; padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:700}
+    .btn.primary{background:var(--kpknl-blue); color:#fff}
+    .btn.ghost{background:transparent; border:1px solid #dbeaf5; color:var(--kpknl-blue)}
+    .modal{position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(6,17,34,0.45); z-index:9999; padding:20px;}
+    .modal .panel{width:100%; max-width:980px; background:#fff; border-radius:10px; overflow:hidden; display:flex; gap:12px; min-height:320px;}
+    .modal .left{flex:1; min-width:320px; display:flex; align-items:center; justify-content:center; background:#f8fbff; padding:18px}
+    .modal img{max-width:100%; max-height:420px; object-fit:contain; border-radius:6px;}
+    .modal .right{flex:1.1; padding:18px; display:flex; flex-direction:column; gap:8px;}
+    .modal .title{font-size:18px; font-weight:800; color:var(--kpknl-blue)}
+    .modal .price{font-weight:900; color:var(--kpknl-green); font-size:16px}
+    .specs{font-size:14px; color:#3b556e; line-height:1.45; margin-top:6px; white-space:pre-wrap}
+    .modal .close{margin-left:auto; background:#eee; border:0; padding:8px 12px; border-radius:8px; cursor:pointer}
+  </style>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <div class="logo"><img src="djkn.jpg" alt="Logo DJKN"></div>
+    <div><h1>KEMENTERIAN KEUANGAN - KPKNL</h1><p>Kantor Pelayanan Kekayaan Negara dan Lelang</p></div>
+  </div>
+</header>
+<nav class="nav"><button class="tab-btn active" data-cat="emas">Emas</button><button class="tab-btn" data-cat="mobil">Mobil</button><button class="tab-btn" data-cat="tas">Tas Branded</button><button class="tab-btn" data-cat="jam">Jam Tangan</button></nav>
+<main><section id="produkArea"></section></main>
+<div id="modal" class="modal"><div class="panel"><div class="left"><img id="modalImg" src="" alt=""></div><div class="right"><div style="display:flex;align-items:center;gap:10px"><div class="title" id="modalTitle"></div><button class="close" onclick="closeModal()">Tutup</button></div><div class="price" id="modalPrice"></div><div class="specs" id="modalSpecs"></div></div></div></div>
+
+<script>
+const products = {
+  emas: [
+    { id:'emas1000', name:'Logam Mulia Antam 1000 Gram', unit:'1000 Gram', price:'Rp 1.900.000.000', img:'emas1000.jpg', spec:'Fine Gold: 999.9 | Sertifikat: LBMA | Berat: 1000 g' },
+    { id:'emas500', name:'Logam Mulia Antam 500 Gram', unit:'500 Gram', price:'Rp 950.000.000', img:'emas500.jpg', spec:'Fine Gold: 999.9 | Sertifikat: LBMA | Berat: 500 g' },
+    { id:'emas250', name:'Logam Mulia Antam 250 Gram', unit:'250 Gram', price:'Rp 475.000.000', img:'emas250.jpg', spec:'Fine Gold: 999.9 | Sertifikat: LBMA | Berat: 250 g' },
+    { id:'emas100', name:'Logam Mulia Antam 100 Gram', unit:'100 Gram', price:'Rp 190.000.000', img:'emas100.jpg', spec:'Fine Gold: 999.9 | Sertifikasi: CertiEye | Berat: 100 g' },
+    { id:'emas50', name:'Logam Mulia Antam 50 Gram', unit:'50 Gram', price:'Rp 95.000.000', img:'emas50.jpg', spec:'Fine Gold: 999.9 | Sertifikasi: CertiEye | Berat: 50 g' },
+    { id:'emas25', name:'Logam Mulia Antam 25 Gram', unit:'25 Gram', price:'Rp 47.500.000', img:'emas25.jpg', spec:'Fine Gold: 999.9 | Sertifikasi: CertiEye | Berat: 25 g' },
+    { id:'emas10', name:'Logam Mulia Antam 10 Gram', unit:'10 Gram', price:'Rp 19.000.000', img:'emas10.jpg', spec:'Fine Gold: 999.9 | Sertifikasi: CertiEye | Berat: 10 g' }
+  ],
+  mobil: Array.from({length:12},(_,i)=>({id:`mobil${i+1}`,name:`Mobil ${i+1}`,price:`Rp ${(i+1)*100000000}`,img:`mobil${i+1}.jpg`,spec:`Spesifikasi mobil ${i+1}`})),
+  tas: [
+    { id:'tas1', name:'Hermès Kelly 25 Black Epsom Ehw K', price:'Rp 243.000.000', img:'tas1.jpg', spec:'Highlights: Matched stitching, Top handle, Electrum hardware\nUkuran: L25 x W9 x H19 cm\nMaterial: Epsom leather' },
+    { id:'tas2', name:'Hermès Birkin 25 HSS Craie / Noir Epsom Rghw', price:'Rp 252.000.000', img:'tas2.jpg', spec:'Highlights: Top handle, Multicolor, Rosegold tone hardware, Keys & lock\nUkuran: L25 x W13 x H20 cm\nMaterial: Epsom leather' },
+    { id:'tas3', name:'Hermès Kelly Mini 20 Beton Ostrich', price:'Rp 320.000.000', img:'tas3.jpg', spec:'Brand: Hermès\nModel: Kelly Mini\nSize: 20\nColor: Beton\nMaterial: Ostrich\nHardware: Gold\nYear: 2022\nCondition: Unused / New\nIncludes: Original Receipt, Strap, Box, CareCard, DustBag(s) 2' },
+    { id:'tas4', name:'Hermès Mini Kelly 20 Rose Azalee Epsom', price:'Rp 201.000.000', img:'tas4.jpg', spec:'Brand: Hermès\nModel: Mini Kelly\nSize: 20\nColor: Rose Azalee\nMaterial: Epsom\nHardware: Gold\nYear: 2021\nCondition: Excellent Used\nIncludes: Original Receipt, Strap, FeltCloth, Box, CareCard, DustBag(s) 2' },
+    { id:'tas5', name:'Chanel Small Classic Handbag Black Caviar Shw', price:'Rp 94.000.000', img:'tas5.jpg', spec:'Highlights: Chain leather strap, Two compartment, Exterior Slip pocket, Silver tone hardware\nUkuran: L23 x W6 x H14.5 cm\nMaterial: Leather' },
+    { id:'tas6', name:'Christian Dior Lady Dior Cannage Lambskin Black Micro GHW 2024', price:'Rp 36.000.000', img:'tas6.jpg', spec:'Type: Lady Dior Cannage\nSize: 12x10.2x5 cm (Micro)\nColor: Black\nMaterial: Lambskin\nCondition: New (2024)\nIncludes: Box, Dust Bag, Card' },
+    { id:'tas7', name:'Chanel Coco Handle Nude Brown Caviarskin GHW Medium 2023', price:'Rp 55.000.000', img:'tas7.jpg', spec:'Type: Coco Handle\nSize: Medium (29x19x12 cm)\nColor: Nude Brown\nMaterial: Caviarskin\nCondition: New (2023)\nIncludes: Box, Dustbag, Card' },
+    { id:'tas8', name:'Christian Dior Lady Dior Lambskin Peach Pink Small GHW 2023', price:'Rp 47.000.000', img:'tas8.jpg', spec:'Type: Lady Dior\nSize: Small (20x18x7 cm)\nColor: Peach Pink\nMaterial: Lambskin\nCondition: Brand New (2023)\nIncludes: Box, Dust Bag, Card' }
+  ],
+  jam: Array.from({length:8},(_,i)=>({id:`jam${i+1}`,name:`Jam ${i+1}`,price:`Rp ${(i+1)*10000000}`,img:`jam${i+1}.jpg`,spec:`Spesifikasi jam ${i+1}`}))
+};
+
+const produkArea=document.getElementById('produkArea');
+const tabs=document.querySelectorAll('.tab-btn');
+function renderCategory(catKey){
+  produkArea.innerHTML=''; const grid=document.createElement('div'); grid.className='grid';
+  (products[catKey]||[]).forEach(p=>{
+    const card=document.createElement('div'); card.className='card';
+    card.innerHTML=`<img src="${p.img}" alt=""><div class='body'><div class='title'>${p.name}</div><div class='price'>${p.price}</div><div class='actions'><button class='btn primary' data-id='${p.id}' data-cat='${catKey}'>Detail</button></div></div>`;
+    grid.appendChild(card);
+  });
+  produkArea.appendChild(grid);
+  document.querySelectorAll('.btn.primary').forEach(btn=>btn.addEventListener('click',()=>{
+    const id=btn.dataset.id; const cat=btn.dataset.cat; const item=(products[cat]||[]).find(x=>x.id===id);
+    if(item) openModal(item);
+  }));
+}
+const modal=document.getElementById('modal');
+function openModal(p){document.getElementById('modalImg').src=p.img;document.getElementById('modalTitle').innerText=p.name;document.getElementById('modalPrice').innerText=p.price;document.getElementById('modalSpecs').innerText=p.spec;modal.style.display='flex';}
+function closeModal(){modal.style.display='none';}
+tabs.forEach(btn=>btn.addEventListener('click',()=>{tabs.forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderCategory(btn.dataset.cat);}));
+renderCategory('emas');
+</script>
+</body>
+</html>
